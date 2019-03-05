@@ -1,0 +1,96 @@
+{
+    "manifest": {
+        "displayName": "Move car",
+        "invocationName": "Move car",
+        "category": "PRODUCTIVITY"
+    },
+    "actions": [
+        {
+            "name": "com.example.actions.MoveCar",
+            "availability": {
+                "deviceClasses": [
+                    {
+                        "assistantSdkDevice": {}
+                    }
+                ]
+            },
+            "intent": {
+                "name": "com.example.intents.MoveCar",
+                "parameters": [
+                    {
+                        "name": "number",
+                        "type": "SchemaOrg_Number"
+                    },
+                    {
+                        "name": "direction",
+                        "type": "Direction"
+                    }
+                ],
+                "trigger": {
+                    "queryPatterns": [
+                        "move ($Direction:direction)? $SchemaOrg_Number:number steps",
+                        "move $SchemaOrg_Number:number steps ($Direction:direction)?",
+			"go ($Direction:direction)? $SchemaOrg_Number:number steps",
+                        "go $SchemaOrg_Number:number steps ($Direction:direction)?"
+                    ]
+                }
+            },
+            "fulfillment": {
+                "staticFulfillment": {
+                    "templatedResponse": {
+                        "items": [
+                            {
+                                "simpleResponse": {
+                                    "textToSpeech": "Moving $number steps"
+                                }
+                            },
+                            {
+                                "deviceExecution": {
+                                    "command": "com.example.commands.MoveCar",
+                                    "params": {
+                                        "direction": "$direction",
+                                        "number": "$number"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ],
+    "types": [
+        {
+            "name": "$Direction",
+            "entities": [
+                {
+                    "key": "RIGHT",
+                    "synonyms": [
+                        "right"
+                    ]
+                },
+                {
+                    "key": "LEFT",
+                    "synonyms": [
+                        "left"
+                    ]
+                },
+                {
+                    "key": "BACKWARD",
+                    "synonyms": [
+                        "behind",
+                        "back"
+                    ]
+                },
+                {
+                    "key": "FORWARD",
+                    "synonyms": [
+                        "forward",
+                        "front",
+                        "ahead"
+                    ]
+                }
+            ]
+        }
+    ]
+}
