@@ -9,7 +9,7 @@ def start():
     element_data = elements.Elements()
     mover = robotmover.Mover()
     commandRetriever = commands.CommandRetriever()
-    maxAdjustAttempt = 3
+    maxAdjustAttempt = 1
 
     while True:
         scannedElement = scanner.scanElement(element_data)

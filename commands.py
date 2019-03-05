@@ -22,7 +22,7 @@ class CommandRetriever:
         if(self.firstCall):
             self.firstCall = False
         else:
-            sleep(5)
+            sleep(.5)
 
         self.iteration += 1
         if(self.iteration == 1):

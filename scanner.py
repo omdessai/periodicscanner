@@ -12,7 +12,7 @@ headers = {'Ocp-Apim-Subscription-Key': subscription_key,
               'Content-Type': 'application/octet-stream'}
 params  = {'language': 'unk', 'detectOrientation': 'true'}
 
-attempts = 3
+attempts = 1
 camera = PiCamera()
 
 def scanElement(element_data):

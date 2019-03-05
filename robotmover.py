@@ -64,3 +64,4 @@ class Mover:
 
     def adjust(self):
         print("Adjusting to scan element")
+        self.setunsetpin(23, .2)
