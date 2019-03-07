@@ -91,17 +91,13 @@ def process_event(event):
             print('Do command', command, 'with params', str(params))
             if command == "com.example.commands.MoveCar":
                 if params['direction'] == 'RIGHT':
-                    for i in range(1,2):
-                        setunsetpin(12, .5)
+                    print("right")
                 if params['direction'] == 'LEFT':
-                    for i in range(1,2):
-                        setunsetpin(25, .5)
+                    print("left")
                 if params['direction'] == 'FORWARD':
-                    for i in range(1,2):
-                        setunsetpin(18, .5)
+                    print("forward")
                 if params['direction'] == 'BACKWARD':
-                    for i in range(1,2):
-                        setunsetpin(23, .5)
+                    print("backward")
                         
             if command == "action.devices.commands.OnOff":
                 if params['on']:
