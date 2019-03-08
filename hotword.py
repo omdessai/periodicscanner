@@ -175,6 +175,7 @@ def main():
         if should_register or (device_id != last_device_id):
             register_device("mypi-f33e7", credentials,
                                 device_model_id, device_id, "")
+            print("device registered")
             pathlib.Path(os.path.dirname(device_config_file)).mkdir(
                     exist_ok=True)
             with open(device_config_file, 'w') as f:
