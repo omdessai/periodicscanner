@@ -4,93 +4,89 @@
         "invocationName": "Move car",
         "category": "PRODUCTIVITY"
     },
-    "actions": [
-        {
-            "name": "com.example.actions.MoveCar",
-            "availability": {
-                "deviceClasses": [
-                    {
-                        "assistantSdkDevice": {}
-                    }
-                ]
-            },
-            "intent": {
-                "name": "com.example.intents.MoveCar",
-                "parameters": [
-                    {
-                        "name": "number",
-                        "type": "SchemaOrg_Number"
-                    },
-                    {
-                        "name": "direction",
-                        "type": "Direction"
-                    }
-                ],
-                "trigger": {
-                    "queryPatterns": [
-                        "move ($Direction:direction)? $SchemaOrg_Number:number steps",
-                        "move $SchemaOrg_Number:number steps ($Direction:direction)?",
-			"go ($Direction:direction)? $SchemaOrg_Number:number steps",
-                        "go $SchemaOrg_Number:number steps ($Direction:direction)?"
-                    ]
+    "actions": [{
+        "name": "com.example.actions.MoveCar",
+        "availability": {
+            "deviceClasses": [{
+                "assistantSdkDevice": {}
+            }]
+        },
+        "intent": {
+            "name": "com.example.intents.MoveCar",
+            "parameters": [{
+                    "name": "number",
+                    "type": "SchemaOrg_Number"
+                },
+                {
+                    "name": "direction1",
+                    "type": "Direction"
+                },
+                {
+                    "name": "direction2",
+                    "type": "Direction"
                 }
-            },
-            "fulfillment": {
-                "staticFulfillment": {
-                    "templatedResponse": {
-                        "items": [
-                            {
-                                "simpleResponse": {
-                                    "textToSpeech": "Moving $number steps"
-                                }
-                            },
-                            {
-                                "deviceExecution": {
-                                    "command": "com.example.commands.MoveCar",
-                                    "params": {
-                                        "direction": "$direction",
-                                        "number": "$number"
-                                    }
+            ],
+            "trigger": {
+                "queryPatterns": [
+                    "move ($Direction:direction1)? ($Direction:direction2)? $SchemaOrg_Number:number steps",
+                    "move $SchemaOrg_Number:number steps ($Direction:direction1)? ($Direction:direction2)?",
+                    "go ($Direction:direction1)? ($Direction:direction2)? $SchemaOrg_Number:number steps",
+                    "go $SchemaOrg_Number:number steps ($Direction:direction1)? ($Direction:direction2)?"
+                ]
+            }
+        },
+        "fulfillment": {
+            "staticFulfillment": {
+                "templatedResponse": {
+                    "items": [{
+                            "simpleResponse": {
+                                "textToSpeech": "Moving $direction1 $direction2 in $number steps"
+                            }
+                        },
+                        {
+                            "deviceExecution": {
+                                "command": "com.example.commands.MoveCar",
+                                "params": {
+                                    "direction1": "$direction1",
+                                    "direction2": "$direction2",
+                                    "number": "$number"
                                 }
                             }
-                        ]
-                    }
+                        }
+                    ]
                 }
             }
         }
-    ],
-    "types": [
-        {
-            "name": "$Direction",
-            "entities": [
-                {
-                    "key": "RIGHT",
-                    "synonyms": [
-                        "right"
-                    ]
-                },
-                {
-                    "key": "LEFT",
-                    "synonyms": [
-                        "left"
-                    ]
-                },
-                {
-                    "key": "BACKWARD",
-                    "synonyms": [
-                        "behind",
-                        "back"
-                    ]
-                },
-                {
-                    "key": "FORWARD",
-                    "synonyms": [
-                        "forward",
-                        "front",
-                        "ahead"
-                    ]
-                }
-            ]
-        }
-    ]
+    }],
+    "types": [{
+        "name": "$Direction",
+        "entities": [{
+                "key": "RIGHT",
+                "synonyms": [
+                    "right"
+                ]
+            },
+            {
+                "key": "LEFT",
+                "synonyms": [
+                    "left"
+                ]
+            },
+            {
+                "key": "BACKWARD",
+                "synonyms": [
+                    "behind",
+                    "back"
+                ]
+            },
+            {
+                "key": "FORWARD",
+                "synonyms": [
+                    "forward",
+                    "front",
+                    "ahead"
+                ]
+            }
+        ]
+    }]
 }
