@@ -67,6 +67,7 @@ def setunsetpin(pin, delay):
 	time.sleep(delay)
 	GPIO.output(pin, GPIO.LOW)
 
+
 def process_event(event):
 
     
@@ -89,30 +90,32 @@ def process_event(event):
     if event.type == EventType.ON_DEVICE_ACTION:
         for command, params in event.actions:
             print('Do command', command, 'with params', str(params))
-            if command == "com.example.commands.MoveCar":
-                if params['direction'] == 'RIGHT':
-                    print("right")
-                if params['direction'] == 'LEFT':
-                    print("left")
-                if params['direction'] == 'FORWARD':
-                    print("forward")
-                if params['direction'] == 'BACKWARD':
-                    print("backward")
-                        
-            if command == "action.devices.commands.OnOff":
-                if params['on']:
-                    for i in range(1,5):
-                        GPIO.output(18, GPIO.HIGH)
-                        time.sleep(.2)
-                        GPIO.output(18, GPIO.LOW)
-                        sleep(.2)
-                else:
-                    for i in range(1,5):
-                        GPIO.output(12, GPIO.HIGH)
-                        time.sleep(.2)
-                        GPIO.output(12, GPIO.LOW)
-                        time.sleep(.2)
+            steps = 1
 
+            if command == "com.example.commands.MoveCar":
+                if params['number'] != None:
+                    steps = params['number']
+                if params['direction1'] == 'RIGHT':
+                    if params['direction2'] == 'FORWARD':
+                        print("right forward by "+ steps)
+                    else:
+                        print("right by "+ steps)
+                if params['direction1'] == 'LEFT':
+                    if params['direction2'] == 'FORWARD':
+                        print("left forward by "+ steps)
+                    else:
+                        print("left by "+ steps)
+                if params['direction1'] == 'FORWARD':
+                    if params['direction2'] == 'RIGHT':
+                        print("right forward by "+ steps)
+                    else:
+                        print("forward by "+ steps)
+                if params['direction1'] == 'BACKWARD':
+                    if params['direction2'] == 'RIGHT':
+                        print("right backward by "+ steps)
+                    else:
+                        print("backward by "+ steps)
+            
 def main():
 
     GPIO.setmode(GPIO.BCM)
@@ -139,12 +142,6 @@ def main():
     parser.add_argument('--device-model-id', '--device_model_id', type=str,
                         metavar='DEVICE_MODEL_ID', required=False,
                         help='the device model ID registered with Google')
-    parser.add_argument('--project-id', '--project_id', type=str,
-                        metavar='PROJECT_ID', required=False,
-                        help='the project ID used to register this device')
-    parser.add_argument('--nickname', type=str,
-                        metavar='NICKNAME', required=False,
-                        help='the nickname used to register this device')
     parser.add_argument('--device-config', type=str,
                         metavar='DEVICE_CONFIG_FILE',
                         default=os.path.join(
@@ -172,7 +169,7 @@ def main():
         credentials = google.oauth2.credentials.Credentials(token=None,
                                                             **json.load(f))
 
-    device_model_id = None
+    device_model_id = "mypi-f33e7-product"
     last_device_id = None
     try:
         with open(args.device_config) as f:
