@@ -175,9 +175,9 @@ def main():
         if should_register or (device_id != last_device_id):
             register_device("mypi-f33e7", credentials,
                                 device_model_id, device_id, "")
-            pathlib.Path(os.path.dirname(args.device_config)).mkdir(
+            pathlib.Path(os.path.dirname(device_config_file)).mkdir(
                     exist_ok=True)
-            with open(args.device_config, 'w') as f:
+            with open(device_config_file, 'w') as f:
                 json.dump({
                     'last_device_id': device_id,
                     'model_id': device_model_id,
@@ -185,7 +185,7 @@ def main():
             
         for event in events:
             if event.type == EventType.ON_START_FINISHED:
-                assistant.send_text_query(args.query)
+                assistant.send_text_query("")
         
             process_event(event)
 
