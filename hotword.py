@@ -136,58 +136,33 @@ def main():
 
     print('Distance to obstacle', distToObstacle)
     
-    
-    parser = argparse.ArgumentParser(
-        formatter_class=argparse.RawTextHelpFormatter)
-    parser.add_argument('--device-model-id', '--device_model_id', type=str,
-                        metavar='DEVICE_MODEL_ID', required=False,
-                        help='the device model ID registered with Google')
-    parser.add_argument('--device-config', type=str,
-                        metavar='DEVICE_CONFIG_FILE',
-                        default=os.path.join(
+    device_config_file = os.path.join(
                             os.path.expanduser('~/.config'),
                             'googlesamples-assistant',
                             'device_config_library.json'
-                        ),
-                        help='path to store and read device configuration')
-    parser.add_argument('--credentials', type=existing_file,
-                        metavar='OAUTH2_CREDENTIALS_FILE',
-                        default=os.path.join(
+                        )
+    credentials_file = os.path.join(
                             os.path.expanduser('~/.config'),
                             'google-oauthlib-tool',
                             'credentials.json'
-                        ),
-                        help='path to store and read OAuth2 credentials')
-    parser.add_argument('--query', type=str,
-                        metavar='QUERY',
-                        help='query to send as soon as the Assistant starts')
-    parser.add_argument('-v', '--version', action='version',
-                        version='%(prog)s ' + Assistant.__version_str__())
-
-    args = parser.parse_args()
-    with open(args.credentials, 'r') as f:
+                        )
+    with open(credentials_file, 'r') as f:
         credentials = google.oauth2.credentials.Credentials(token=None,
                                                             **json.load(f))
 
     device_model_id = "mypi-f33e7-product"
     last_device_id = None
     try:
-        with open(args.device_config) as f:
+        with open(device_config_file) as f:
             device_config = json.load(f)
             device_model_id = device_config['model_id']
             last_device_id = device_config.get('last_device_id', None)
     except FileNotFoundError:
         pass
 
-    if not args.device_model_id and not device_model_id:
-        raise Exception('Missing --device-model-id option')
-
     # Re-register if "device_model_id" is given by the user and it differs
     # from what we previously registered with.
-    should_register = (
-        args.device_model_id and args.device_model_id != device_model_id)
-
-    device_model_id = args.device_model_id or device_model_id
+    should_register = ("mypi-f33e7-product" != device_model_id)
 
     with Assistant(credentials, device_model_id) as assistant:
         events = assistant.start()
@@ -198,9 +173,8 @@ def main():
 
         # Re-register if "device_id" is different from the last "device_id":
         if should_register or (device_id != last_device_id):
-            if args.project_id:
-                register_device(args.project_id, credentials,
-                                device_model_id, device_id, args.nickname)
+            register_device("mypi-f33e7", credentials,
+                                device_model_id, device_id, "")
                 pathlib.Path(os.path.dirname(args.device_config)).mkdir(
                     exist_ok=True)
                 with open(args.device_config, 'w') as f:
@@ -212,7 +186,7 @@ def main():
                 print(WARNING_NOT_REGISTERED)
 
         for event in events:
-            if event.type == EventType.ON_START_FINISHED and args.query:
+            if event.type == EventType.ON_START_FINISHED:
                 assistant.send_text_query(args.query)
         
             process_event(event)
