@@ -37,11 +37,8 @@ except NameError:
 class CommandRetriever:
     firstCall = True
     iteration = 0
-    callback
     project_device_model_id = "mypi-f33e7-product"
-    device_model_id
-    credentials
-
+    
     def __init__ (self, commandprocessor):
         self.callback = commandprocessor
         device_config_file = default=os.path.join(os.path.expanduser('~/.config'),'googlesamples-assistant','device_config_library.json')
@@ -49,7 +46,7 @@ class CommandRetriever:
         with open(creds_file, 'r') as f:
             self.credentials = google.oauth2.credentials.Credentials(token=None, **json.load(f))
 
-        device_model_id = None
+        self.device_model_id = None
         try:
             with open(device_config_file) as f:
                 device_config = json.load(f)
