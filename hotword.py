@@ -62,26 +62,16 @@ def process_event(event):
 
 def main():
     project_device_model_id = "mypi-f33e7-product"
-    parser = argparse.ArgumentParser(
-        formatter_class=argparse.RawTextHelpFormatter)
-    parser.add_argument('--project-id', '--project_id', type=str,
-                        metavar='PROJECT_ID', required=False,
-                        help='the project ID used to register this device')
-    parser.add_argument('--device-config', type=str,
-                        metavar='DEVICE_CONFIG_FILE',
-                        default=os.path.join(
+    device_config_file = default=os.path.join(
                             os.path.expanduser('~/.config'),
                             'googlesamples-assistant',
                             'device_config_library.json'
-                        ),
-                        help='path to store and read device configuration')
-    
+                        )
     creds_file = default=os.path.join(
                             os.path.expanduser('~/.config'),
                             'google-oauthlib-tool',
                             'credentials.json'
                         )
-    args = parser.parse_args()
     with open(creds_file, 'r') as f:
         credentials = google.oauth2.credentials.Credentials(token=None,
                                                             **json.load(f))
@@ -89,7 +79,7 @@ def main():
     device_model_id = None
     last_device_id = None
     try:
-        with open(args.device_config) as f:
+        with open(device_config_file) as f:
             device_config = json.load(f)
             device_model_id = device_config['model_id']
             last_device_id = device_config.get('last_device_id', None)
