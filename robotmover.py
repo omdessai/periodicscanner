@@ -2,7 +2,6 @@ import RPi.GPIO as GPIO
 import google.oauth2.credentials
 import time
 import commands
-import command
 
 class Mover:
     def __init__(self):
