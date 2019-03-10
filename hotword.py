@@ -1,12 +1,9 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
-import argparse
 import json
 import os.path
 import pathlib2 as pathlib
 import google.oauth2.credentials
-import time
 
 from google.assistant.library import Assistant
 from google.assistant.library.event import EventType
