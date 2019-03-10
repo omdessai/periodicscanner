@@ -5,7 +5,7 @@ import json
 import os.path
 import pathlib2 as pathlib
 import google.oauth2.credentials
-import command
+from sharedtypes import command
 
 from google.assistant.library import Assistant
 from google.assistant.library.event import EventType

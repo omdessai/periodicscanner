@@ -2,7 +2,7 @@ import elements
 import scanner
 import robotmover
 import commands
-import command 
+from sharedtypes import command
 
 element_data = elements.Elements()
 mover = robotmover.Mover()
