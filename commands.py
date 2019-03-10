@@ -104,7 +104,7 @@ class CommandRetriever:
                             self.mover.move(Direction.LEFTBACKWARD, steps)
                             return
                         else:
-                            self.mover.move(Direction.LEFTFORWARD, steps)
+                            self.mover.move(Direction.RIGHTBACKWARD, steps)
                             return
 
 
