@@ -64,38 +64,48 @@ class CommandRetriever:
                 print('Do command', command, 'with params', str(params))
                 if command == "com.example.commands.MoveCar":
                     steps = 1
-                    if params['number'] != None:
+                    if not params['number']:
                         steps = int(params['number'])
                         if(steps > 5):
                             steps = 5
                     if params['direction1'] == 'RIGHT':
-                        if(params['direction2'] == None):
+                        if(not params['direction2']):
                             return
                         if params['direction2'] == 'FORWARD':
                             self.mover.move(Direction.RIGHTFORWARD, steps)
+                            return
                         else:
                             self.mover.move(Direction.RIGHTBACKWARD, steps)
+                            return
                     if params['direction1'] == 'LEFT':
-                        if(params['direction2'] == None):
+                        if(not params['direction2']):
                             return
                         if params['direction2'] == 'FORWARD':
                             self.mover.move(Direction.LEFTFORWARD, steps)
+                            return
                         else:
                             self.mover.move(Direction.LEFTBACKWARD, steps)
+                            return
                     if params['direction1'] == 'FORWARD':
-                        if(params['direction2'] == None):
+                        if(not params['direction2']):
                             self.mover.move(Direction.FORWARD, steps)
+                            return
                         if params['direction2'] == 'LEFT':
                             self.mover.move(Direction.LEFTFORWARD, steps)
+                            return
                         else:
                             self.mover.move(Direction.RIGHTFORWARD, steps)
+                            return
                     if params['direction1'] == 'BACKWARD':
-                        if(params['direction2'] == None):
+                        if(not params['direction2']):
                             self.mover.move(Direction.BACKWARD, steps)
+                            return
                         if params['direction2'] == 'LEFT':
                             self.mover.move(Direction.LEFTBACKWARD, steps)
+                            return
                         else:
-                            self.mover.move(Direction.LEFTBACKWARD, steps)
+                            self.mover.move(Direction.LEFTFORWARD, steps)
+                            return
 
 
     def generateAndProcessCommands (self):

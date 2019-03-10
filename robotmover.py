@@ -41,6 +41,7 @@ class Mover:
         GPIO.output(pin2, GPIO.LOW)
 
     def move(self, direction, steps):
+        print("moving direction ->", direction, " steps -> ", steps)
         if(direction == commands.Direction.BACKWARD):
             for i in range(0, steps):
                 self.setunsetpin(23, .5)
@@ -60,7 +61,7 @@ class Mover:
             for i in range(0, steps):
                 self.setunsettwopins(18, 12, .5)
         #print("Moving "+ direction.name() + " by " + steps + " steps")
-        print("Moving")
+        #print("Moving")
 
     def adjust(self):
         print("Adjusting to scan element")
