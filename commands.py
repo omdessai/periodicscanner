@@ -1,6 +1,7 @@
 from enum import Enum 
 from time import sleep
 
+import robotmover
 import json
 import os.path
 import pathlib2 as pathlib
@@ -39,8 +40,8 @@ class CommandRetriever:
     iteration = 0
     project_device_model_id = "mypi-f33e7-product"
     
-    def __init__ (self, commandprocessor):
-        self.callback = commandprocessor
+    def __init__ (self):
+        self.mover = robotmover.Mover()
         device_config_file = default=os.path.join(os.path.expanduser('~/.config'),'googlesamples-assistant','device_config_library.json')
         creds_file = default=os.path.join(os.path.expanduser('~/.config'),'google-oauthlib-tool','credentials.json')
         with open(creds_file, 'r') as f:
@@ -54,46 +55,47 @@ class CommandRetriever:
         except FileNotFoundError:
             pass
 
-        self.device_model_id = project_device_model_id or self.device_model_id
+        self.device_model_id = self.project_device_model_id or self.device_model_id
 
     def process_event(self, event):
+        print(event)
         if event.type == EventType.ON_DEVICE_ACTION:
             for command, params in event.actions:
                 print('Do command', command, 'with params', str(params))
                 if command == "com.example.commands.MoveCar":
                     steps = 1
                     if params['number'] != None:
-                        steps = params['number']
+                        steps = int(params['number'])
                         if(steps > 5):
                             steps = 5
                     if params['direction1'] == 'RIGHT':
                         if(params['direction2'] == None):
                             return
                         if params['direction2'] == 'FORWARD':
-                            self.callback(command(Direction.RIGHTFORWARD, steps))
+                            self.mover.move(Direction.RIGHTFORWARD, steps)
                         else:
-                            self.callback(command(Direction.RIGHTBACKWARD, steps))
+                            self.mover.move(Direction.RIGHTBACKWARD, steps)
                     if params['direction1'] == 'LEFT':
                         if(params['direction2'] == None):
                             return
                         if params['direction2'] == 'FORWARD':
-                            self.callback(command(Direction.LEFTFORWARD, steps))
+                            self.mover.move(Direction.LEFTFORWARD, steps)
                         else:
-                            self.callback(command(Direction.LEFTBACKWARD, steps))
+                            self.mover.move(Direction.LEFTBACKWARD, steps)
                     if params['direction1'] == 'FORWARD':
                         if(params['direction2'] == None):
-                            self.callback(command(Direction.FORWARD, steps))
+                            self.mover.move(Direction.FORWARD, steps)
                         if params['direction2'] == 'LEFT':
-                            self.callback(command(Direction.LEFTFORWARD, steps))
+                            self.mover.move(Direction.LEFTFORWARD, steps)
                         else:
-                            self.callback(command(Direction.RIGHTFORWARD, steps))
+                            self.mover.move(Direction.RIGHTFORWARD, steps)
                     if params['direction1'] == 'BACKWARD':
                         if(params['direction2'] == None):
-                            self.callback(command(Direction.BACKWARD, steps))
+                            self.mover.move(Direction.BACKWARD, steps)
                         if params['direction2'] == 'LEFT':
-                            self.callback(command(Direction.LEFTBACKWARD, steps))
+                            self.mover.move(Direction.LEFTBACKWARD, steps)
                         else:
-                            self.callback(command(Direction.LEFTBACKWARD, steps))
+                            self.mover.move(Direction.LEFTBACKWARD, steps)
 
 
     def generateAndProcessCommands (self):
@@ -107,7 +109,7 @@ class CommandRetriever:
                 if event.type == EventType.ON_START_FINISHED:
                     assistant.send_text_query("what is your name")
             
-                process_event(event)
+                self.process_event(event)
 
     def getCommand(self):
         if(self.firstCall):

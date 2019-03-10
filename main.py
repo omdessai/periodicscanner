@@ -1,11 +1,14 @@
 import elements
 import scanner
-import robotmover
+
 import commands
 
-#print(scanner.scanElement())
+element_data = elements.Elements()
+maxAdjustAttempt = 1
+commandRetriever = commands.CommandRetriever()
+
 def commandProcessor(command):
-    print("next command" , command)
+    #print("next command" , command)
     mover.move(command.direction, command.steps)
 
 def start():
@@ -32,11 +35,5 @@ def start():
     #    if(scannedElement != None):
     #        print("Found element: =>")
     #        print(scannedElement)
-    
-
-element_data = elements.Elements()
-mover = robotmover.Mover()
-commandRetriever = commands.CommandRetriever(commandProcessor)
-maxAdjustAttempt = 1
 
 start()
