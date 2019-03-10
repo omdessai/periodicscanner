@@ -3,11 +3,6 @@ import scanner
 import robotmover
 import commands
 
-element_data = elements.Elements()
-mover = robotmover.Mover()
-commandRetriever = commands.CommandRetriever(commandProcessor)
-maxAdjustAttempt = 1
-
 #print(scanner.scanElement())
 def commandProcessor(command):
     print("next command" , command)
@@ -38,5 +33,10 @@ def start():
     #        print("Found element: =>")
     #        print(scannedElement)
     
+
+element_data = elements.Elements()
+mover = robotmover.Mover()
+commandRetriever = commands.CommandRetriever(commandProcessor)
+maxAdjustAttempt = 1
 
 start()
