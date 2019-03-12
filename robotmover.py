@@ -4,7 +4,8 @@ import time
 import commands
 
 class Mover:
-    def __init__(self):
+    def __init__(self, scancb):
+        self.scancallback = scancb
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(18, GPIO.OUT)
         GPIO.setup(23, GPIO.OUT)
@@ -60,9 +61,11 @@ class Mover:
         if(direction == commands.Direction.RIGHTFORWARD):
             for i in range(0, steps):
                 self.setunsettwopins(18, 12, .5)
+        
+        self.scancallback()
         #print("Moving "+ direction.name() + " by " + steps + " steps")
         #print("Moving")
 
     def adjust(self):
         print("Adjusting to scan element")
-        self.setunsetpin(23, .2)
+        self.setunsetpin(18, .1)

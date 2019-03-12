@@ -40,8 +40,8 @@ class CommandRetriever:
     iteration = 0
     project_device_model_id = "mypi-f33e7-product"
     
-    def __init__ (self):
-        self.mover = robotmover.Mover()
+    def __init__ (self, robomover):
+        self.mover = robomover
         device_config_file = default=os.path.join(os.path.expanduser('~/.config'),'googlesamples-assistant','device_config_library.json')
         creds_file = default=os.path.join(os.path.expanduser('~/.config'),'google-oauthlib-tool','credentials.json')
         with open(creds_file, 'r') as f:

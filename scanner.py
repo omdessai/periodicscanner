@@ -49,8 +49,8 @@ def scanElementAttempt():
         ocr_url, headers=headers, params=params, data=image_data)
     response.raise_for_status()
     analysis = response.json()
-    #print("analysis=>")
-    #print(analysis)
+    print("analysis=>")
+    print(analysis)
     # Extract the word text.
     line_infos = [region["lines"] for region in analysis["regions"]]
     word_infos = []
